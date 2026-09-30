@@ -1,0 +1,14 @@
+DROP TABLE IF EXISTS students;
+DROP TABLE IF EXISTS courses;
+CREATE TABLE courses(
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    code VARCHAR(10) NOT NULL UNIQUE
+);
+CREATE TABLE students(
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    birth_date DATE CHECK (birth_date < CURRENT_DATE) ,
+    created_at TIMESTAMP DEFAULT NOW()
+);
