@@ -21,7 +21,5 @@ CREATE TABLE enrollments(
     enrollment_date TIMESTAMP DEFAULT NOW(),
     UNIQUE(student_id, course_id)
 );
-INSERT INTO students (name, email) VALUES ('Test', 'test@example.com');
-INSERT INTO courses (name, code) VALUES ('Intro to CS', 'CS101');
-INSERT INTO enrollments (student_id, course_id) VALUES (1, 1);
-INSERT INTO enrollments (student_id, course_id) VALUES (1, 1);
+
+
