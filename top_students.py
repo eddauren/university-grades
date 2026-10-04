@@ -44,5 +44,9 @@ with psycopg.connect(string) as conn:
     with conn.cursor() as cur:
         cur.execute(query)
         rows=cur.fetchall()
-        for row in rows:
-            print(row)
+        print(f"|{'Course':<22}|{'Student':<22}|{'Grade':>5}|")
+        print("-"*53)
+        for _,name,course,grade in rows:
+            grade= grade if grade is not None else "-"
+            print(f"|{course:<22}|{name:<22}|{grade:>5}|")
+            print("-"*53)
