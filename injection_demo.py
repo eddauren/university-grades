@@ -1,10 +1,10 @@
 from db import get_connection
-def find_student_safe(conn,name):
+def find_student_safe(conn,name):# Safe version using parameterized queries to prevent SQL injection
     query="SELECT id, name, email FROM students WHERE name = %s"
     with conn.cursor() as cur:
         cur.execute(query, (name,))
         return cur.fetchall()
-def find_student_unsafe(conn,name):
+def find_student_unsafe(conn,name):# Unsafe version vulnerable to SQL injection
     query=f"SELECT id, name, email FROM students WHERE name = '{name}'"
     with conn.cursor() as cur:
         cur.execute(query)
