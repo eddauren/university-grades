@@ -15,9 +15,9 @@ def main():
         rows=get_top_students(conn)
         print(f"|{'Course':<22}|{'Student':<22}|{'Grade':>5}|")
         print("-"*53)
-        for _,student,course,grade in rows:
-            grade_text=grade if grade is not None else "-"
-            print(f"|{course:<22}|{student:<22}|{grade_text:>5}|")
+        for row in rows:
+            grade_text=row['grade'] if row['grade'] is not None else "-"
+            print(f"|{row['course']:<22}|{row['student']:<22}|{grade_text:>5}|")
             print("-"*53)
 
 

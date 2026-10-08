@@ -3,5 +3,5 @@ import top_students
 
 with get_connection() as conn:
     rows=top_students.get_top_students(conn)
-    for _,student,_,_ in rows:
-        print(student)
+    for row in rows:
+        print(row['student'])

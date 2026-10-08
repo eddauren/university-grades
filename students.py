@@ -8,7 +8,7 @@ def add_student(conn,name,email,birth_date):
     """
     with conn.cursor() as cur:
         cur.execute(query,(name,email,birth_date))
-        return cur.fetchone()[0]
+        return cur.fetchone()["id"]
 
 if __name__=="__main__":
     try:

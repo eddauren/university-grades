@@ -32,9 +32,9 @@ def main():
                     conn.rollback()
             elif choice == "2":
                 rows = get_top_students(conn)
-                for _, student, course, grade in rows:
-                    grade_text = grade if grade is not None else "-"
-                    print(course, student, grade_text)
+                for row in rows:
+                    grade_text = row['grade'] if row['grade'] is not None else "-"
+                    print(row['course'], row['student'], grade_text)
             elif choice == "0":
                 break
             else:

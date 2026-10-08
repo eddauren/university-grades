@@ -1,6 +1,7 @@
 import os
 import psycopg
 from dotenv import load_dotenv
+from psycopg.rows import dict_row
 load_dotenv()
 
 def get_connection():
@@ -10,4 +11,4 @@ def get_connection():
         f"password={os.getenv('DB_PASSWORD')} "
         f"host={os.getenv('DB_HOST')}"
     )
-    return psycopg.connect(string)
+    return psycopg.connect(string, row_factory=dict_row)
