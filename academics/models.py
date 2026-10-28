@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.db.models import functions
 
 # Create your models here.
 class Course(models.Model):
@@ -13,6 +14,14 @@ class Student(models.Model):
     email=models.EmailField(max_length=100, unique=True)
     birth_date=models.DateField()
     created_at=models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        constraints=[
+            models.CheckConstraint(
+                condition=models.Q(birth_date__lt=functions.TruncDate(functions.Now())),
+                name="birth_date_in_past"
+            )
+        ]
 
     def __str__(self):
         return self.name
