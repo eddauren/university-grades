@@ -17,13 +17,15 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from rest_framework.routers import DefaultRouter
-from academics.views import StudentViewSet
+from academics.views import StudentViewSet, EnrollmentViewSet, set_grade
 from django.urls import include, path
 
 router= DefaultRouter()
 router.register("students", StudentViewSet)
+router.register("enrollments", EnrollmentViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
+    path("api/set-grade/", set_grade),
 ]
