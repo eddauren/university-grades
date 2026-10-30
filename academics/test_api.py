@@ -73,8 +73,22 @@ def test_top_students_get(client,course):
     assert response.status_code==200
     assert len(response.data)==1
     row= response.data[0]
-    assert row["student"]=="Test"
+    assert row["student"]=="Test1"
     assert row["course"]=="Math"
     assert row["grade"]==100
 
-    
+@pytest.mark.django_db
+def test_top_students_two_same_grades(client,course):
+    student1=Student.objects.create(name="AAA", email="test1@example.com", birth_date="2001-01-01")
+    student2=Student.objects.create(name="BBB", email="test2@example.com", birth_date="2001-01-01")
+    Enrollment.objects.create(student=student1,course=course,grade=100)
+    Enrollment.objects.create(student=student2,course=course,grade=100)
+    response=client.get(
+        "/api/top-students/"
+    )
+    assert response.status_code==200
+    assert len(response.data)==1
+    row= response.data[0]
+    assert row["student"]=="AAA"
+    assert row["course"]=="Math"
+    assert row["grade"]==100
