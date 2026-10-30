@@ -12,7 +12,7 @@ ranked AS (
         grade,
         ROW_NUMBER() OVER (
             PARTITION BY course_id 
-            ORDER BY grade, student DESC NULLS LAST
+            ORDER BY grade DESC NULLS LAST, academics_enrollment.student_id
         ) AS rn 
     FROM academics_enrollment
 ) 
