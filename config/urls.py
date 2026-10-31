@@ -19,6 +19,7 @@ from django.urls import path
 from rest_framework.routers import DefaultRouter
 from academics.views import StudentViewSet, EnrollmentViewSet, set_grade, top_students
 from django.urls import include, path
+from rest_framework.authtoken.views import obtain_auth_token
 
 router= DefaultRouter()
 router.register("students", StudentViewSet)
@@ -28,5 +29,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
     path('api/set-grade/', set_grade),
-    path('api/top-students/', top_students)
+    path('api/top-students/', top_students),
+    path('api/token/', obtain_auth_token)
 ]

@@ -1,6 +1,17 @@
 import pytest
 from rest_framework.test import APIClient
 from academics.models import Student, Course, Enrollment
+from django.contrib.auth.models import User
+
+@pytest.fixture
+def user():
+    return User.objects.create_user(username="teacher", password="pass12345")
+
+@pytest.fixture
+def auth_client(user):
+    client = APIClient()
+    client.force_authenticate(user=user)
+    return client
 
 @pytest.fixture
 def client():
@@ -15,8 +26,8 @@ def course():
     return Course.objects.create(name="Math", code="M1")
 
 @pytest.mark.django_db
-def test_set_grade_creates_enrollment(client,student,course):
-    response = client.put(
+def test_set_grade_creates_enrollment(auth_client,student,course):
+    response = auth_client.put(
         "/api/set-grade/",
         {"student": student.id, "course": course.id, "grade":90},
         format="json",
@@ -25,14 +36,14 @@ def test_set_grade_creates_enrollment(client,student,course):
     assert Enrollment.objects.count()==1
 
 @pytest.mark.django_db
-def test_set_grade_updates_existing_enrollment(client,student,course):
-    response=client.put(
+def test_set_grade_updates_existing_enrollment(auth_client,student,course):
+    response=auth_client.put(
         "/api/set-grade/",
         {"student":student.id, "course" : course.id, "grade":70},
         format="json"
     )
     assert response.status_code==201
-    response=client.put(
+    response=auth_client.put(
         "/api/set-grade/",
         {"student":student.id, "course" : course.id, "grade":90},
         format="json"
@@ -42,8 +53,8 @@ def test_set_grade_updates_existing_enrollment(client,student,course):
     assert Enrollment.objects.get(student=student, course=course).grade==90
 
 @pytest.mark.django_db
-def test_set_grade_wrong_grade(client,student,course):
-    response= client.put(
+def test_set_grade_wrong_grade(auth_client,student,course):
+    response= auth_client.put(
         "/api/set-grade/",
         {"student": student.id, "course":course.id, "grade":150},
         format="json"
@@ -52,8 +63,8 @@ def test_set_grade_wrong_grade(client,student,course):
     assert Enrollment.objects.count()==0
 
 @pytest.mark.django_db
-def test_set_grade_non_existing_student(client,course):
-    response= client.put(
+def test_set_grade_non_existing_student(auth_client,course):
+    response= auth_client.put(
         "/api/set-grade/",
         {"student": 9999, "course":course.id, "grade":100},
         format="json"
@@ -92,3 +103,13 @@ def test_top_students_two_same_grades(client,course):
     assert row["student"]=="AAA"
     assert row["course"]=="Math"
     assert row["grade"]==100
+
+@pytest.mark.django_db
+def test_set_grade_without_token(client,student,course):
+    response=client.put(
+        "/api/set-grade/",
+        {"student":student.id,"course":course.id,"grade":90},
+        format="json"
+    )
+    assert response.status_code==401
+    assert Enrollment.objects.count()==0
