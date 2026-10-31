@@ -70,11 +70,11 @@ You need Python 3 and PostgreSQL.
 ## Project history
 
 The project started as plain Python scripts talking to PostgreSQL with `psycopg`.
-These early scripts are still in the repo root (`db.py`, `cli.py`,
-`top_students.py`, `students.py`, `grades.py`).
-`injection_demo.py` is an **intentionally vulnerable** example that shows
-SQL injection next to the safe version.
-Then I rebuilt the project as a Django REST API.
+These early scripts now live in `legacy/`. `legacy/injection_demo.py` is an
+**intentionally vulnerable** example that shows SQL injection next to the safe
+version. Never use that pattern in real code.
+Then I rebuilt the project as a Django REST API. The command
+`python manage.py import_legacy` copies the old data into the new database.
 
 ## What is not done yet
 
