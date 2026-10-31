@@ -2,6 +2,7 @@ import pytest
 from rest_framework.test import APIClient
 from academics.models import Student, Course, Enrollment
 from django.contrib.auth.models import User
+from rest_framework.settings import api_settings
 
 @pytest.fixture
 def user():
@@ -133,3 +134,28 @@ def test_set_grade_non_staff_creates_enrollment(auth_client,student,course):
     )
     assert response.status_code == 403
     assert Enrollment.objects.count()==0
+
+@pytest.mark.django_db
+def test_students_list_is_paginated(client):
+    page_size=api_settings.PAGE_SIZE
+    total=page_size+1
+    for i in range(total):
+        Student.objects.create(
+            name=f"S{i}",
+            email=f"s{i}@example.com",
+            birth_date="2001-01-01",
+        )
+    first= client.get("/api/students/")
+    assert first.status_code==200
+    assert first.data["count"]==total
+    assert len(first.data["results"])==page_size
+    assert first.data["next"] is not None
+    assert first.data["previous"] is None
+
+    second=client.get("/api/students/?page=2")
+    assert second.status_code==200
+    assert len(second.data["results"])==1
+    assert second.data["next"] is None
+
+    third=client.get("api/students/?page=3")
+    assert third.status_code==404

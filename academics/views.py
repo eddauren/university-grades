@@ -13,10 +13,10 @@ TOP_STUDENTS_QUERY = QUERY_PATH.read_text(encoding="utf-8")
 
 # Create your views here.
 class StudentViewSet(viewsets.ModelViewSet):
-    queryset= Student.objects.all()
+    queryset= Student.objects.order_by("id")
     serializer_class=StudentSerializer
 class EnrollmentViewSet(viewsets.ModelViewSet):
-    queryset= Enrollment.objects.all()
+    queryset= Enrollment.objects.order_by("id")
     serializer_class= EnrollmentSerializer
 
 @api_view(["PUT"])
