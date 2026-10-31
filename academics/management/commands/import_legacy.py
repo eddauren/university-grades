@@ -1,12 +1,20 @@
 from django.core.management.base import BaseCommand
-from db import get_connection
 from academics.models import Course, Student, Enrollment
+import os
+import psycopg
+from psycopg.rows import dict_row
 
 class Command(BaseCommand):
     help="Import data feom the legacy university_grades database"
 
     def handle(self,*args,**options):
-        with get_connection() as conn:
+        with psycopg.connect(
+            dbname=os.getenv("DB_NAME"),
+            user=os.getenv("DB_USER"),
+            password=os.getenv("DB_PASSWORD"),
+            host=os.getenv("DB_HOST"),
+            row_factory=dict_row,
+        ) as conn:
             with conn.cursor() as cur:
                 cur.execute("SELECT id, name, code FROM courses ORDER BY id")
                 courses= cur.fetchall()
