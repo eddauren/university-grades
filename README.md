@@ -1,101 +1,50 @@
 # University Grades API
+
 ![Tests](https://github.com/eddauren/university-grades/actions/workflows/tests.yml/badge.svg)
-A small REST API for managing students, courses and grades.
 
-> **This is a learning project.** I built it to practice the core skills of a
-> junior Python backend developer. It is not used in production.
-
-## Tech stack
-
-Python, Django, Django REST Framework, PostgreSQL, pytest
-
-## What it does
-
-- Manage students, courses and enrollments (a student's grade in a course)
-- Set a grade with one request: create the enrollment or update it if it exists
-- Show the best student of each course (only courses with an average above 80)
-- Token login. Anyone can read data, only staff users can change it
-
-
-## Endpoints
-
-| Method | URL | Description | Who |
-|---|---|---|---|
-| POST | `/api/token/` | Get an auth token | anyone |
-| GET | `/api/students/` | List students (paginated) | anyone |
-| POST | `/api/students/` | Create a student | staff |
-| GET / POST | `/api/enrollments/` | List or create enrollments | read: anyone, write: staff |
-| PUT | `/api/set-grade/` | Set a grade (`201` if created, `200` if updated) | staff |
-| GET | `/api/top-students/` | Best student per course | anyone |
-
-## Run with Docker
-
-1. Create a `.env` file (see `.env.example`):
-
-2. Start the app and the database:
-
-   ```bash
-   docker compose up --build
-   ```
-
-3. Create an admin user:
-
-   ```bash
-   docker compose exec web python manage.py createsuperuser
-   ```
-
-The API is at `http://127.0.0.1:8000/api/`. Data is kept in a Docker volume.
-Note: this uses Django's development server, so it is meant for local work, not production.
-
-## Run locally
-
-You need Python 3 and PostgreSQL.
-
-1. Create a database named `university_api`.
-2. Create a `.env` file in the project root:
-
-   ```
-   DJANGO_SECRET_KEY=your_secret_key
-   DB_USER=postgres
-   DB_PASSWORD=your_password
-   DB_HOST=localhost
-   ```
-
-3. Install and start:
-
-   ```bash
-   python -m venv .venv
-   # Windows: .venv\Scripts\Activate.ps1   Linux/macOS: source .venv/bin/activate
-   python -m pip install -r requirements.txt
-   python manage.py migrate
-   python manage.py createsuperuser
-   python manage.py runserver
-   ```
-
-
+A small REST API I built while learning backend development.
+It manages students, courses and grades. This is a learning project, not a production system.
 
 ## What I practiced
 
-- **SQL and PostgreSQL:** joins, CTEs, window functions, indexes, transactions, upsert
-- **Django and DRF:** models, migrations, serializers, viewsets, admin
-- **REST API design:** HTTP methods, status codes, JSON errors, pagination
-- **Security basics:** token authentication, permissions, secrets in `.env`,
-  parameterized queries to prevent SQL injection
-- **Data integrity:** constraints in the database and validation in the API
-- **Testing:** pytest with fixtures, including tests for auth and error cases
-- **Git and GitHub:** small commits, `.gitignore`, clear commit messages
--**Docker and CI:** Dockerfile, docker-compose, GitHub Actions running pytest.
+* SQL and PostgreSQL (joins, CTEs, window functions, transactions, upsert)
+* Django and Django REST Framework
+* REST API basics (HTTP methods, status codes, JSON errors, pagination)
+* Token authentication and permissions
+* Safe SQL (parameterized queries) and secrets in `.env`
+* Tests with pytest
+* Docker, docker-compose and GitHub Actions (CI)
 
-## Project history
+## Features
 
-The project started as plain Python scripts talking to PostgreSQL with `psycopg`.
-These early scripts now live in `legacy/`. `legacy/injection_demo.py` is an
-**intentionally vulnerable** example that shows SQL injection next to the safe
-version. Never use that pattern in real code.
-Then I rebuilt the project as a Django REST API. The command
-`python manage.py import_legacy` copies the old data into the new database.
+* Add and list students, courses and enrollments
+* Set a grade in one request (creates or updates)
+* Find the best student of each course
+* Anyone can read data, only staff can change it
 
-## What is not done yet
+## Endpoints
 
-- API documentation page (Swagger)
-- Deployment
+* `POST /api/token/` get a token
+* `GET /api/students/` list students
+* `GET /api/enrollments/` list enrollments
+* `PUT /api/set-grade/` set a grade (staff only)
+* `GET /api/top-students/` best student per course
+
+## Run
+
+Create a `.env` file (see `.env.example`), then:
+
+```bash
+docker compose up --build
+```
+
+The API is at `http://127.0.0.1:8000/api/`.
+Run tests with `python -m pytest`.
+
+## Notes
+
+* `legacy/` has my first version: plain Python scripts with `psycopg`.
+  `legacy/injection_demo.py` is an intentionally unsafe example of SQL injection.
+* Not done yet: API docs (Swagger) and deployment.
+
+**Tech:** Python, Django, DRF, PostgreSQL, pytest, Docker
