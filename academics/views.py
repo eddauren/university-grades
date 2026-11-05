@@ -6,6 +6,8 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.db import connection
 from pathlib import Path
+from drf_spectacular.utils import extend_schema, inline_serializer
+from rest_framework import serializers
 
 BASE_DIR=Path(__file__).parent
 QUERY_PATH=BASE_DIR / "sql" / "top_students.sql"
@@ -19,6 +21,7 @@ class EnrollmentViewSet(viewsets.ModelViewSet):
     queryset= Enrollment.objects.order_by("id")
     serializer_class= EnrollmentSerializer
 
+@extend_schema(request=SetGradeSerializer , responses=EnrollmentSerializer)
 @api_view(["PUT"])
 def set_grade(request):
     serializer=SetGradeSerializer(data=request.data)
@@ -31,6 +34,19 @@ def set_grade(request):
     )
     status_code=201 if created else 200
     return Response(EnrollmentSerializer(enrollment).data, status=status_code)
+
+@extend_schema(
+    responses=inline_serializer(
+        name="TopStudent",
+        fields={
+            "id": serializers.IntegerField(),
+            "student": serializers.CharField(),
+            "course": serializers.CharField(),
+            "grade": serializers.IntegerField(),
+        },
+        many=True,
+    )
+)
 
 @api_view(["GET"])
 def top_students(request):

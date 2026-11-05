@@ -20,6 +20,7 @@ from rest_framework.routers import DefaultRouter
 from academics.views import StudentViewSet, EnrollmentViewSet, set_grade, top_students
 from django.urls import include, path
 from rest_framework.authtoken.views import obtain_auth_token
+from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
 router= DefaultRouter()
 router.register("students", StudentViewSet)
@@ -30,5 +31,7 @@ urlpatterns = [
     path('api/', include(router.urls)),
     path('api/set-grade/', set_grade),
     path('api/top-students/', top_students),
-    path('api/token/', obtain_auth_token)
+    path('api/token/', obtain_auth_token),
+    path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
+    path("api/docs/", SpectacularSwaggerView.as_view(url_name="schema"), name="docs"),
 ]

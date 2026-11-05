@@ -38,7 +38,8 @@ REST_FRAMEWORK={
         "academics.permissions.IsStaffOrReadOnly"
     ],
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
-    "PAGE_SIZE": 20
+    "PAGE_SIZE": 20,
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
 # Application definition
@@ -53,6 +54,7 @@ INSTALLED_APPS = [
     'academics',
     'rest_framework',
     'rest_framework.authtoken',
+    'drf_spectacular',
 ]
 
 MIDDLEWARE = [
@@ -144,4 +146,10 @@ MAILERS = {
     'default': {
         'BACKEND': 'django.core.mail.backends.console.EmailBackend',
     },
+}
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "University Grades API",
+    "DESCRIPTION": "Learning project: students, courses and grades.",
+    "VERSION": "1.0.0",
 }
