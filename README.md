@@ -1,5 +1,5 @@
 # University Grades API
-
+![Tests](https://github.com/eddauren/university-grades/actions/workflows/tests.yml/badge.svg)
 A small REST API for managing students, courses and grades.
 
 > **This is a learning project.** I built it to practice the core skills of a
@@ -28,6 +28,24 @@ Python, Django, Django REST Framework, PostgreSQL, pytest
 | PUT | `/api/set-grade/` | Set a grade (`201` if created, `200` if updated) | staff |
 | GET | `/api/top-students/` | Best student per course | anyone |
 
+## Run with Docker
+
+1. Create a `.env` file (see `.env.example`):
+
+2. Start the app and the database:
+
+   ```bash
+   docker compose up --build
+   ```
+
+3. Create an admin user:
+
+   ```bash
+   docker compose exec web python manage.py createsuperuser
+   ```
+
+The API is at `http://127.0.0.1:8000/api/`. Data is kept in a Docker volume.
+Note: this uses Django's development server, so it is meant for local work, not production.
 
 ## Run locally
 
@@ -66,6 +84,7 @@ You need Python 3 and PostgreSQL.
 - **Data integrity:** constraints in the database and validation in the API
 - **Testing:** pytest with fixtures, including tests for auth and error cases
 - **Git and GitHub:** small commits, `.gitignore`, clear commit messages
+-**Docker and CI:** Dockerfile, docker-compose, GitHub Actions running pytest.
 
 ## Project history
 
@@ -78,7 +97,5 @@ Then I rebuilt the project as a Django REST API. The command
 
 ## What is not done yet
 
-- Docker setup
-- CI (automatic tests on every push)
 - API documentation page (Swagger)
 - Deployment
