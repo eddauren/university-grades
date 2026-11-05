@@ -20,6 +20,7 @@ services:
     env_file: .env
     environment:
       DB_HOST: db
+      DJANGO_DEBUG: "1"
     ports:
       - "8000:8000"
     depends_on:

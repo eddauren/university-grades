@@ -38,13 +38,13 @@ Create a `.env` file (see `.env.example`), then:
 docker compose up --build
 ```
 
-The API is at `http://127.0.0.1:8000/api/`.
+* API docs: `http://127.0.0.1:8000/api/docs/` (Swagger)
 Run tests with `python -m pytest`.
 
 ## Notes
 
 * `legacy/` has my first version: plain Python scripts with `psycopg`.
   `legacy/injection_demo.py` is an intentionally unsafe example of SQL injection.
-* Not done yet: API docs (Swagger) and deployment.
+* Not done yet: deployment.
 
 **Tech:** Python, Django, DRF, PostgreSQL, pytest, Docker
