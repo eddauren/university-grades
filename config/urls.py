@@ -21,12 +21,14 @@ from academics.views import StudentViewSet, EnrollmentViewSet, set_grade, top_st
 from django.urls import include, path
 from rest_framework.authtoken.views import obtain_auth_token
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
+from django.views.generic import TemplateView
 
 router= DefaultRouter()
 router.register("students", StudentViewSet)
 router.register("enrollments", EnrollmentViewSet)
 
 urlpatterns = [
+    path('', TemplateView.as_view(template_name="index.html")),
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
     path('api/set-grade/', set_grade),

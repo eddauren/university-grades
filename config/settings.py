@@ -154,6 +154,7 @@ MAILERS = {
 }
 
 SPECTACULAR_SETTINGS = {
+    "SERVE_INCLUDE_SCHEMA": False,
     "TITLE": "University Grades API",
     "DESCRIPTION": "Learning project: students, courses and grades.",
     "VERSION": "1.0.0",
